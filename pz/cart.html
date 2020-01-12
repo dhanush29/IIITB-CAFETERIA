@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Shopping Cart</title>
+
+    <link rel="stylesheet" href="cart.css" media="screen" title="no title" charset="utf-8">
+    <script src="https://code.jquery.com/jquery-2.2.4.js" charset="utf-8"></script>
+    <meta name="robots" content="noindex,follow" />
+  </head>
+  <body>
+    <div class="box-1 h1">
+       <h1>Welcome To IIITB Cafeteria</h1>
+    </div>
+   
+   <div class="shopping-cart">
+      <!-- Title -->
+      <div class="title">
+        Shopping Bag
+      </div>
+
+      <!-- Product #1 -->
+      <div class="item">
+        <div class="buttons">
+          <span class="delete-btn"></span>
+          <span class="like-btn"></span>
+        </div>
+
+        <div class="image">
+          <img src="tea.jpg" alt="" />
+        </div>
+
+        <div class="description">
+          <span>Tea</span>
+        </div>
+
+        <div class="quantity">
+          <button class="plus-btn" type="button" name="button">
+            <img src="plus.svg" alt="" />
+          </button>
+          <input type="text" id="val1" value="0">
+          <button class="minus-btn" type="button" name="button">
+            <img src="minus.svg" alt="" />
+          </button>
+        </div>
+
+        <div class="total-price" >Rs <span class="qty1">25</span>/-</div>
+      </div>
+
+      <!-- Product #2 -->
+      <div class="item">
+        <div class="buttons">
+          <span class="delete-btn"></span>
+          <span class="like-btn"></span>
+        </div>
+
+        <div class="image">
+          <img src="cappacino.jpg" alt=""/>
+        </div>
+
+        <div class="description">
+          <span>Cappuccino</span>
+        </div>
+
+        <div class="quantity">
+          <button class="plus-btn" type="button" name="button">
+            <img src="plus.svg" alt="" />
+          </button>
+          <input type="text" id="val2" value="0">
+          <button class="minus-btn" type="button" name="button">
+            <img src="minus.svg" alt="" />
+          </button>
+        </div>
+
+        <div class="total-price" >Rs <span class="qty2">30</span>/-</div>
+      </div>
+
+      <!-- Product #3 -->
+      <div class="item">
+        <div class="buttons">
+          <span class="delete-btn"></span>
+          <span class="like-btn"></span>
+        </div>
+
+        <div class="image">
+          <img src="badam-milk.jpg" alt="" />
+        </div>
+
+        <div class="description">
+          <span>Badam Milk</span>
+        </div>
+
+        <div class="quantity">
+          <button class="plus-btn" type="button" name="button">
+            <img src="plus.svg" alt="" />
+          </button>
+          <input type="text" id="val3" value="0">
+          <button class="minus-btn" type="button" name="button">
+            <img src="minus.svg" alt="" />
+          </button>
+        </div>
+
+        <div class="total-price" >Rs <span class="qty3">15</span>/-</div>
+      </div>
+     
+    </div>
+    
+    <div class="p">
+        <button onclick="checkout()" id="cb">Check out your order</button>
+        <p id="fare"></p>
+        <p id="demo"></p>
+    </div>
+    
+
+    <script type="text/javascript">
+     
+
+      $('.minus-btn').on('click', function(e) {
+    		e.preventDefault();
+    		var $this = $(this);
+    		var $input = $this.closest('div').find('input');
+    		var value = parseInt($input.val());
+        
+    		if (value > 1) {
+    			value = value - 1;
+    		} else{
+          value =0;
+        }
+        $input.val(value);
+
+    	});
+
+    	$('.plus-btn').on('click', function(e) {
+    		e.preventDefault();
+    		var $this = $(this);
+    		var $input = $this.closest('div').find('input');
+    		var value = parseInt($input.val());
+
+    		if (value < 100) {
+      		value = value + 1;
+    		} else {
+    			value =100;
+    		}
+
+    		$input.val(value);
+    	});
+
+      $('.like-btn').on('click', function() {
+        $(this).toggleClass('is-active');
+      });
+      
+  
+      function checkout() {
+        
+        var sum = 0;
+                 
+        sum = parseInt($('#val1').val()) * parseInt($('.qty1').text()) +
+              parseInt($('#val2').val()) * parseInt($('.qty2').text()) + 
+              parseInt($('#val3').val()) * parseInt($('.qty3').text());
+        var successMsg = "Your total fare is "+sum+" and the order has been placed successfully!!";
+        var noDataMsg = "Your haven't added any item to the cart, please add something and proceed with the check out!!";
+
+        if (sum > 0){
+          document.getElementById("fare").innerHTML=successMsg;
+          document.getElementById("cb").disabled = true;
+        }
+        else{
+          document.getElementById("fare").innerHTML=noDataMsg;
+        }
+      
+        // var xhttp = new XMLHttpRequest();
+        // xhttp.onreadystatechange = function() {
+        //   console.log("hi")
+        //   // if (this.status == 200) {
+        //     document.getElementById("demo").innerHTML = this.responseText;
+        //   // }
+        // };
+        // xhttp.open("GET", "localhost:5000/api/items", true);
+        // xhttp.send();
+        console.log(httpGet("http://localhost:5000/api/items"))
+    }
+    function httpGet(theUrl)
+{
+    var xmlHttp = new XMLHttpRequest();
+       xmlHttp.open( "GET", theUrl, true  ); // false for synchronous request
+       // xmlHttp.setRequestHeader('Access-Control-Allow-Origin', "http://localhost");
+       xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.status == 200)
+            // callback(xmlHttp.responseText);
+            console.log(xmlHttp.responseText)
+            a=xmlHttp.responseText
+            document.getElementById("demo").innerHTML = JSON.parse(a)[0].name;
+            document.getElementById("demo").innerHTML = JSON.parse(a)[0].image;
+            document.getElementById("demo").innerHTML = JSON.parse(a)[0].price;
+    }
+    xmlHttp.send();
+    // return xmlHttp.responseText;
+}
+    </script>
+  </body>
+</html>

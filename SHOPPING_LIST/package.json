@@ -1,0 +1,21 @@
+{
+  "name": "shopping_list",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "server": "nodemon app.js"
+  },
+  "author": "Dhanush",
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "concurrently": "^5.0.2",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.8.6",
+    "node-fetch": "^2.6.0"
+  }
+}
